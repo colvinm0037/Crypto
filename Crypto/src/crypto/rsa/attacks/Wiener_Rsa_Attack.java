@@ -11,7 +11,6 @@ package crypto.rsa.attacks;
  */
 
 import java.math.BigInteger;
-import java.util.Scanner;
 
 public class Wiener_Rsa_Attack {    
       
@@ -19,7 +18,9 @@ public class Wiener_Rsa_Attack {
     * after they have been encrypted with the public e and N that are passed in. If all three
     * cases are decrypted properly then the boolean looksLegit is returned as true, else it is false.
     *
-    * @param looksLegit - boolean for if a possible d correctly decrypts.
+    * @param possibleD the decryption d to test.
+    * @param e the public encryption exponent.
+    * @param N the public N value.
     */
    private boolean checkTrue(BigInteger possibleD, BigInteger e, BigInteger N) {
 	   
@@ -42,62 +43,59 @@ public class Wiener_Rsa_Attack {
     * values for the convergences of the continued fraction of e/N. Each of these values is then tested until the correct
     * decryption exponent d is found. Once d is found, it is printed out and the program ends.
     *
-    * @param int numberOfd - This holds the number of values in the continued fraction of e/N
-    * @param BigInteger[] myArray - This holds the values of the continued fraction of e/N
-    * @param BigInteger[] myCon - This array holds the denominator values of the convergents of the continued fractions of e/N
-    * @param BigInteger[] myNumerators - This is used to hold the numerators for finding the continued fracion of e/N 
-    * @param BigInteger[] myDenominators - This is used to hold the denominators for finding the continued fracion of e/N
+    * @param int numberOfd - 
     */
     public BigInteger runAttack(BigInteger N, BigInteger e) {
 	   	
-    	int numberOfd = 0;		
-		
-		BigInteger[] myArray = new BigInteger[1000];
-		BigInteger[] myCon = new BigInteger[1000];
-		BigInteger[] myNumerators = new BigInteger[1000];
-		BigInteger[] myDenominators = new BigInteger[1000];
+    	int numberOfValues = 0; // This holds the number of values in the continued fraction of e/N	
+		BigInteger[] continuedFraction = new BigInteger[1000]; // This holds the values of the continued fraction of e/N
+		BigInteger[] convergents = new BigInteger[1000]; // This holds the denominator values of the convergent's of the continued fractions of e/N
+		BigInteger[] numerators = new BigInteger[1000]; // This holds the numerators for finding the continued fraction of e/N
+		BigInteger[] denominators = new BigInteger[1000]; // This holds the denominators for finding the continued fraction of e/N
 
-		myNumerators[0] = e;
-		myDenominators[0] = N;
+		numerators[0] = e;
+		denominators[0] = N;
 
-		for (int i = 0; i < 1000; i++) // This is where the continued fraction of e/N is found and stored in myArray
+		// Compute the continued fraction of e/N
+		for (int i = 0; i < 1000; i++)
 		{
-			myArray[i] = myNumerators[i].divide(myDenominators[i]);
-			myNumerators[i + 1] = myDenominators[i];
-			myDenominators[i + 1] = myNumerators[i].mod(myDenominators[i]);
+			continuedFraction[i] = numerators[i].divide(denominators[i]);
+			numerators[i + 1] = denominators[i];
+			denominators[i + 1] = numerators[i].mod(denominators[i]);
 
-			if (myDenominators[i + 1] == BigInteger.ZERO) // This is checking for when the continued fraction ends, and breaks loop.
-			{
-				numberOfd = i;
+			 // Once the denominator reaches zero than continued fraction has ended.
+			if (denominators[i + 1] == BigInteger.ZERO) {
+				numberOfValues = i;
 				break;
 			}
 		}
 
 		System.out.println("\nThe continued fraction of e/N is"); 
-		for (int i = 0; i < numberOfd; i++) {
-			System.out.print(myArray[i] + ", ");
+		for (int i = 0; i < numberOfValues; i++) {
+			System.out.print(continuedFraction[i] + ", ");
 		}
 
-		myCon[0] = BigInteger.ONE; // The first value of the denominator convergents is one
-		myCon[1] = myArray[1]; // The second value value is the second value of myArray
+		convergents[0] = BigInteger.ONE;
+		convergents[1] = continuedFraction[1];
 
-		for (int i = 2; i < numberOfd; i++) // This loop finds the rest of the denominator values of the convergents
-		{
-			myCon[i] = (myArray[i].multiply(myCon[i - 1])).add(myCon[i - 2]);
+		 // Find the rest of the denominator values of the convergents
+		for (int i = 2; i < numberOfValues; i++) {
+			convergents[i] = (continuedFraction[i].multiply(convergents[i - 1])).add(convergents[i - 2]);
 		}
 
 		System.out.println("\n\nThe denominators of the convergences of e/N are");
 		
-		for (int i = 0; i < numberOfd; i++) {
-			System.out.print(myCon[i] + ", ");
+		for (int i = 0; i < numberOfValues; i++) {
+			System.out.print(convergents[i] + ", ");
 		}
 
-		for (int i = 0; i < numberOfd; i++) // Here all denominator values are checked with the checkTrue method
+		for (int i = 0; i < numberOfValues; i++)
 		{
-			if (checkTrue(myCon[i], e, N)) // Once a suitable d is found it is printed out and the program ends
+			 // If the convergent works for 7, 11, and 13 then it is d
+			if (checkTrue(convergents[i], e, N))
 			{
-				System.out.println("\n\nd = " + myCon[i]);		
-				return myCon[i];				
+				System.out.println("\n\nd = " + convergents[i]);		
+				return convergents[i];				
 			}
 		}
 		

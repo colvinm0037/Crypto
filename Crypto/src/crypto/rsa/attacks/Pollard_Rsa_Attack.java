@@ -11,27 +11,21 @@ import java.math.BigInteger;
  */
 public class Pollard_Rsa_Attack
 {
-   /** In the main class the user is asked for the public values e and N, then a loop is used to take
-	 *  check from 2 to bigB + 1 for a p that is greater than one, and when one is found, p is then used 
-     *  to find q, and then finally to find the decryption exponent d. These values are printed, the loop is broken,
-     *  and the program ends.
+   /** A loop is used to check from 2 to bigB + 1 for a p that is greater than one, and when one is found, p is then used 
+     * to find q, and then finally to find the decryption exponent d. These values are printed, the loop is broken,
+     * and the program ends.
      *
-	 * @param bigB		 2 is raised to the factorial value of bigB during each cycle of the main loop
-	 * @param myArray  an array of BigIntegers holds the BigIntegeers that are needed
-	 * @param myn      BigInteger that is user defined		
-     * @param e        BigInteger that is user defined
+	 * @param N        BigInteger that is public in a RSA encryption (N = p*q)		
+     * @param e        BigInteger that is public in a RSA encryption (e is the encryption exponent)
      */
     public BigInteger runAttack(BigInteger N, BigInteger e) {         
 
         int bigB = 100001;
         BigInteger[] myArray = new BigInteger[bigB + 1];
-        
-        // The first time the loop is run it needs a defined value for the bigInteger in the starting position
         myArray[2] = new BigInteger("2");
 
         // This is the main loop, where every value is tried from 2 up to bigB + 1
         for (int j = 2; j < (bigB); j++) {
-        	
         	
         	myArray[j+1] = myArray[j].modPow(BigInteger.valueOf(Long.valueOf(j)), N);      
   
@@ -43,18 +37,18 @@ public class Pollard_Rsa_Attack
 	        // It takes a lot of energy to check every cycle, so it is spaced out
 	        if (!(p_candidate.equals(BigInteger.ONE)) && ((j % 10) == 0)) {
 	
-	        	// Dividing N by the prime p will give the other prime q 
+	        	// Divide N by the prime p will give the other prime q 
 	            BigInteger q_candidate = N.divide(p_candidate);
 	            
-	            // Setting phi = (p - 1)(q - 1)
+	            // Set phi = (p - 1)(q - 1)
 	            BigInteger phi = (p_candidate.subtract(BigInteger.ONE)).multiply((q_candidate.subtract(BigInteger.ONE)));
-	            
+	        
 	            BigInteger d = e.modInverse(phi);
 	            
-	            System.out.println("p = " + p_candidate); // Print p
-	            System.out.println("q = " + q_candidate); // Print q
-	            System.out.println("phi(N) = " + phi);    // Print phi(n)
-	            System.out.println("d = " + d);           // Print the decryption exponent d
+	            System.out.println("p = " + p_candidate);
+	            System.out.println("q = " + q_candidate);
+	            System.out.println("phi(N) = " + phi);   
+	            System.out.println("d = " + d);
 	
 	            return d;	            
 	         }
