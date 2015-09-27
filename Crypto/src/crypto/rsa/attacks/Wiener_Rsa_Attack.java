@@ -48,14 +48,9 @@ public class Wiener_Rsa_Attack {
     * @param BigInteger[] myNumerators - This is used to hold the numerators for finding the continued fracion of e/N 
     * @param BigInteger[] myDenominators - This is used to hold the denominators for finding the continued fracion of e/N
     */
-    public BigInteger runAttack() {
-	   				
-		// Test case I used
-		//
-		// n = 7978886869909,
-		// e = 3594320245477
-
-		int numberOfd = 0;
+    public BigInteger runAttack(BigInteger N, BigInteger e) {
+	   	
+    	int numberOfd = 0;
 		BigInteger d = BigInteger.ZERO;
 		
 		BigInteger[] myArray = new BigInteger[1000];
@@ -63,16 +58,8 @@ public class Wiener_Rsa_Attack {
 		BigInteger[] myNumerators = new BigInteger[1000];
 		BigInteger[] myDenominators = new BigInteger[1000];
 
-		Scanner in = new Scanner(System.in);
-		System.out.println("Please Enter N: "); // Here we get the public N value
-		myDenominators[0] = in.nextBigInteger();
-		System.out.println("Please Enter e: "); // Here we get the public e value
-		myNumerators[0] = in.nextBigInteger();
-
-		in.close();
-
-		BigInteger e = myNumerators[0];
-		BigInteger N = myDenominators[0];
+		myNumerators[0] = e;
+		myDenominators[0] = N;
 
 		for (int i = 0; i < 1000; i++) // This is where the continued fraction of e/N is found and stored in myArray
 		{

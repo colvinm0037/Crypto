@@ -12,7 +12,7 @@ public class Interface {
 		
 		//pollard.runAttack();
 		
-		wiener.runAttack();
+		//wiener.runAttack();
 		
 		
 	}

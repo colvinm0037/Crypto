@@ -26,35 +26,26 @@ public class Pollard_Rsa_Attack
 	 * @param myn      BigInteger that is user defined		
      * @param e        BigInteger that is user defined
      */
-    public BigInteger runAttack() {   	
-    	
-        Scanner in = new Scanner(System.in); 
+    public BigInteger runAttack(BigInteger N, BigInteger e) {         
 
         int bigB = 100001;
         BigInteger[] myArray = new BigInteger[bigB + 1];
         myArray[2] = new BigInteger("2"); // The first time the loop is run it needs a defined value for the bigInteger in the starting position
-       
-        System.out.println("Please Enter N: ");  // Here we get the public N value
-        BigInteger myn = in.nextBigInteger();
-        System.out.println("Please Enter e: ");  // Here we get the public e value
-        BigInteger e = in.nextBigInteger();    
 
-        in.close();
-      
         // This is the main loop, where every value is tried from 2 up to bigB + 1
         for (int j = 2; j < (bigB + 1); j++) {
         	
-        	 myArray[j+1] = myArray[j].modPow(BigInteger.valueOf(Long.valueOf(j)), myn);      
+        	 myArray[j+1] = myArray[j].modPow(BigInteger.valueOf(Long.valueOf(j)), N);      
   
 	         System.out.println("2^(" + j + "!) = " + myArray[j+1]); // This can be activated to see each step of the loop
 	         
-	         BigInteger p_candidate = myn.gcd(myArray[j+1].subtract(BigInteger.ONE));        
+	         BigInteger p_candidate = N.gcd(myArray[j+1].subtract(BigInteger.ONE));        
 	      
 	         // We want to stop as soon as we find a p_candidate that works
 	         // It takes a lot of energy to check every cycle, so it is spaced out
 	         if (!(p_candidate.equals(BigInteger.ONE)) && ((j % 10) == 0)) {
 	
-	            BigInteger q_candidate = myn.divide(p_candidate);  // Dividing N by the prime p will give the other prime q
+	            BigInteger q_candidate = N.divide(p_candidate);  // Dividing N by the prime p will give the other prime q
 	            BigInteger phi = (p_candidate.subtract(BigInteger.ONE)).multiply((q_candidate.subtract(BigInteger.ONE))); // Setting phi = (p - 1)(q - 1)
 	            BigInteger d = e.modInverse(phi);
 	            
@@ -68,14 +59,5 @@ public class Pollard_Rsa_Attack
         }
         
         return BigInteger.ZERO;
-     //    These are all the provided test values of N for debugging purposes
-     //
-     //    BigInteger myn = new BigInteger("111293094034769304884167051458174320813595510448138274866152002067365927");
-     //    BigInteger myn = new BigInteger("189114989429752082926285457551369642787381790039260802307452110490304547");
-     //    BigInteger myn = new BigInteger("5000272002251811540446579586816039346308785565641862331905860763123733");
-     //    BigInteger myn = new BigInteger("250733654482468568921620042866859718852920028026076547177974758239109177");
-     //    BigInteger myn = new BigInteger("569103453433136759845979917275329455217634214927045904833932154667794633")
-     //    BigInteger myn = N;  109
- 
    }
 }
