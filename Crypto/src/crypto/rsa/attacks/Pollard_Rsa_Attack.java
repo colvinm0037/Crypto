@@ -15,8 +15,8 @@ public class Pollard_Rsa_Attack
      * to find q, and then finally to find the decryption exponent d. These values are printed, the loop is broken,
      * and the program ends.
      *
-	 * @param N        BigInteger that is public in a RSA encryption (N = p*q)		
-     * @param e        BigInteger that is public in a RSA encryption (e is the encryption exponent)
+     * @param N BigInteger that is public in a RSA encryption (N = p*q)		
+     * @param e BigInteger that is public in a RSA encryption (e is the encryption exponent)
      */
     public BigInteger runAttack(BigInteger N, BigInteger e) {         
 

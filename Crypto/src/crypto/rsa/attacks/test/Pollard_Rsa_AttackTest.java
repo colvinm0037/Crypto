@@ -1,9 +1,6 @@
 package crypto.rsa.attacks.test;
 
-import static org.junit.Assert.*;
-
 import java.math.BigInteger;
-
 import org.junit.Assert;
 import org.junit.Test;
 

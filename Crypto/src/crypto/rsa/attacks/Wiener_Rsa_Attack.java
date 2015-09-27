@@ -6,44 +6,19 @@ package crypto.rsa.attacks;
  * decryption exponent d. This program finds all these d's, and tests each one, and finds the correct value of d. 
  *
  * @author Micah Colvin
- * @
  * @version 1.0 Build 10 Apr. 20, 2014
  */
 
 import java.math.BigInteger;
 
 public class Wiener_Rsa_Attack {    
-      
-   /** This takes a candidate for d, and checks to see if it correctly decrypts 7, 11, and 13
-    * after they have been encrypted with the public e and N that are passed in. If all three
-    * cases are decrypted properly then the boolean looksLegit is returned as true, else it is false.
-    *
-    * @param possibleD the decryption d to test.
-    * @param e the public encryption exponent.
-    * @param N the public N value.
-    */
-   private boolean checkTrue(BigInteger possibleD, BigInteger e, BigInteger N) {
-	   
-	   boolean looksLegit = false;
-	   BigInteger seven = new BigInteger("7");
-	   BigInteger eleven = new BigInteger("11");
-	   BigInteger thirteen = new BigInteger("13");      
-  
-	   if ((seven.modPow(possibleD.multiply(e), N).intValue() == 7) && 
-           (eleven.modPow(possibleD.multiply(e), N).intValue() == 11) && 
-           (thirteen.modPow(possibleD.multiply(e), N).intValue() == 13)) {
-		   
-    	   looksLegit = true;
-	   }        
-     
-	   return looksLegit;
-   }      
-   
+         
    /** This main class takes in a user defined e and N, finds the continued fraction of e/N, then finds all the denominator
     * values for the convergences of the continued fraction of e/N. Each of these values is then tested until the correct
     * decryption exponent d is found. Once d is found, it is printed out and the program ends.
     *
-    * @param int numberOfd - 
+    * @param N BigInteger that is public in a RSA encryption (N = p*q)		
+    * @param e BigInteger that is public in a RSA encryption (e is the encryption exponent)
     */
     public BigInteger runAttack(BigInteger N, BigInteger e) {
 	   	
@@ -101,5 +76,30 @@ public class Wiener_Rsa_Attack {
 		
 		System.out.println("\n\nCould not find decrpytion exponent d for N = " + N + ", e = " + e);
 		return BigInteger.ZERO; 
-   }   
+    }  
+    
+    /** This takes a candidate for d, and checks to see if it correctly decrypts 7, 11, and 13
+     * after they have been encrypted with the public e and N that are passed in. If all three
+     * cases are decrypted properly then the boolean looksLegit is returned as true, else it is false.
+     *
+     * @param possibleD the decryption d to test.
+     * @param e the public encryption exponent.
+     * @param N the public N value.
+     */
+    private boolean checkTrue(BigInteger possibleD, BigInteger e, BigInteger N) {
+ 	   
+ 	   boolean looksLegit = false;
+ 	   BigInteger seven = new BigInteger("7");
+ 	   BigInteger eleven = new BigInteger("11");
+ 	   BigInteger thirteen = new BigInteger("13");      
+   
+ 	   if ((seven.modPow(possibleD.multiply(e), N).intValue() == 7) && 
+            (eleven.modPow(possibleD.multiply(e), N).intValue() == 11) && 
+            (thirteen.modPow(possibleD.multiply(e), N).intValue() == 13)) {
+ 		   
+     	   looksLegit = true;
+ 	   }        
+      
+ 	   return looksLegit;
+    }      
 }
