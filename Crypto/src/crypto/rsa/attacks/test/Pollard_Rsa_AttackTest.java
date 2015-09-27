@@ -11,11 +11,10 @@ import crypto.rsa.attacks.Pollard_Rsa_Attack;
 
 public class Pollard_Rsa_AttackTest {
 
-
 	private Pollard_Rsa_Attack pollard = new Pollard_Rsa_Attack();
 	
 	@Test
-	public void Pollard_Rsa_Attack_Test_One() {
+	public void Pollard_Rsa_Attack_Test_Success_One() {
 
 		BigInteger N = new BigInteger("111293094034769304884167051458174320813595510448138274866152002067365927");
 		BigInteger e = new BigInteger("101");
@@ -27,7 +26,7 @@ public class Pollard_Rsa_AttackTest {
 	}
 	
 	@Test
-	public void Pollard_Rsa_Attack_Test_Two() {
+	public void Pollard_Rsa_Attack_Test_Success_Two() {
 
 		BigInteger N = new BigInteger("189114989429752082926285457551369642787381790039260802307452110490304547");
 		BigInteger e = new BigInteger("101");
@@ -40,7 +39,7 @@ public class Pollard_Rsa_AttackTest {
 
 	
 	@Test
-	public void Pollard_Rsa_Attack_Test_Three() {
+	public void Pollard_Rsa_Attack_Test_Success_Three() {
 
 		BigInteger N = new BigInteger("5000272002251811540446579586816039346308785565641862331905860763123733");
 		BigInteger e = new BigInteger("103");
@@ -52,7 +51,7 @@ public class Pollard_Rsa_AttackTest {
 	}
 	
 	@Test
-	public void Pollard_Rsa_Attack_Test_Four() {
+	public void Pollard_Rsa_Attack_Test_Success_Four() {
 
 		BigInteger N = new BigInteger("250733654482468568921620042866859718852920028026076547177974758239109177");
 		BigInteger e = new BigInteger("97");
@@ -64,7 +63,7 @@ public class Pollard_Rsa_AttackTest {
 	}
 	
 	@Test
-	public void Pollard_Rsa_Attack_Test_Five() {
+	public void Pollard_Rsa_Attack_Test_Success_Five() {
 
 		BigInteger N = new BigInteger("569103453433136759845979917275329455217634214927045904833932154667794633");
 		BigInteger e = new BigInteger("109");
@@ -74,5 +73,17 @@ public class Pollard_Rsa_AttackTest {
 					
 		Assert.assertEquals(d, expectedD);		
 	}
-	
+
+	@Test
+	public void Pollard_Rsa_Attack_Test_Failure_One() {
+
+		BigInteger N = new BigInteger("5691034534331367598459799172753294552221");
+		BigInteger e = new BigInteger("109");
+		BigInteger expectedD = BigInteger.ZERO;
+		
+		BigInteger d = pollard.runAttack(N, e);
+					
+		Assert.assertEquals(d, expectedD);		
+	}
+
 }

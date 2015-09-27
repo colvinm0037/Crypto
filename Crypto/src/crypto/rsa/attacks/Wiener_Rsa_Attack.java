@@ -16,7 +16,7 @@ import java.util.Scanner;
 public class Wiener_Rsa_Attack {    
       
    /** This takes a candidate for d, and checks to see if it correctly decrypts 7, 11, and 13
-    * after they have been encrypted with the public e and N that are passed in. If all three come
+    * after they have been encrypted with the public e and N that are passed in. If all three
     * cases are decrypted properly then the boolean looksLegit is returned as true, else it is false.
     *
     * @param looksLegit - boolean for if a possible d correctly decrypts.
@@ -50,8 +50,7 @@ public class Wiener_Rsa_Attack {
     */
     public BigInteger runAttack(BigInteger N, BigInteger e) {
 	   	
-    	int numberOfd = 0;
-		BigInteger d = BigInteger.ZERO;
+    	int numberOfd = 0;		
 		
 		BigInteger[] myArray = new BigInteger[1000];
 		BigInteger[] myCon = new BigInteger[1000];
@@ -98,11 +97,11 @@ public class Wiener_Rsa_Attack {
 			if (checkTrue(myCon[i], e, N)) // Once a suitable d is found it is printed out and the program ends
 			{
 				System.out.println("\n\nd = " + myCon[i]);		
-				d = myCon[i];
-				break;
+				return myCon[i];				
 			}
 		}
 		
-		return d;                
+		System.out.println("\n\nCould not find decrpytion exponent d for N = " + N + ", e = " + e);
+		return BigInteger.ZERO; 
    }   
 }
